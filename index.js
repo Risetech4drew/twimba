@@ -4,7 +4,15 @@ import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 
 // localStorage.setItem('tweetsData', JSON.stringify(tweetsData))
 
-const tweetsFromStorage = JSON.parse(localStorage.getItem('tweetsData'))
+let tweetsFromStorage = JSON.parse(localStorage.getItem('tweetsData'))
+
+if (tweetsFromStorage === null){
+    tweetsFromStorage = [...tweetsData]
+    localStorage.setItem('tweetsData', JSON.stringify(tweetsFromStorage))
+
+    render(tweetsFromStorage) 
+}
+
 
 
 document.addEventListener('click', function(e){
@@ -21,8 +29,8 @@ document.addEventListener('click', function(e){
         handleReplyClick(e.target.dataset.reply)
        
     } else if(e.target.id === 'tweet-btn') {
-        // handleTweetBtn()
-        clear()
+        handleTweetBtn()
+       
         
 
     } else if(e.target.dataset.replyBtn){
@@ -34,12 +42,8 @@ document.addEventListener('click', function(e){
     
 })
 
-function clear(){
-    localStorage.clear()
-}
-
 function handleLikeClick(tweetId){
-    if (tweetsFromStorage){
+    
 
         const targetTweetObj = tweetsFromStorage.filter(function(tweet){
             return tweet.uuid === tweetId
@@ -57,13 +61,13 @@ function handleLikeClick(tweetId){
          // FLIPPING BOOLEANS
          targetTweetObj.isLiked = !targetTweetObj.isLiked
          localStorage.setItem('tweetsData', JSON.stringify(tweetsFromStorage))
-         render()  
+         render(tweetsFromStorage)  
 
-    }
+    
         
 }
 function handleRetweet(tweetId){
-        if (tweetsFromStorage){
+        
             const targetTweetObj = tweetsFromStorage.filter(function(tweet){
 
                 return tweet.uuid === tweetId
@@ -81,9 +85,9 @@ function handleRetweet(tweetId){
             targetTweetObj.isRetweeted = !targetTweetObj.isRetweeted
             localStorage.setItem('tweetsData', JSON.stringify(tweetsFromStorage))
             
-            render()
+            render(tweetsFromStorage)
 
-        }
+        
  
 }
 function handleTweetBtn(){
@@ -104,7 +108,7 @@ function handleTweetBtn(){
         
         tweetInput.value = ''
         localStorage.setItem('tweetsData', JSON.stringify(tweetsFromStorage))
-        render()
+        render(tweetsFromStorage)
     }
     
 }
@@ -131,15 +135,15 @@ function handleReplyTweetBtn(tweetId){
    
     localStorage.setItem('tweetsData', JSON.stringify(tweetsFromStorage))
     replyInput.value = '' 
-    render()
+    render(tweetsFromStorage)
     }
 }
 
-function getFeedHtml(){
-    if (tweetsFromStorage){
+function getFeedHtml(tweets){
+    // if (tweetsFromStorage){
         let feedHtml = ''
 
-    tweetsFromStorage.forEach(function(tweet){
+    tweets.forEach(function(tweet){
 
     let likeIconClass = ''
 
@@ -208,15 +212,15 @@ function getFeedHtml(){
         
     return feedHtml
 
-    }  
+    // }  
 }
-getFeedHtml()
+// getFeedHtml()
 
 // rendering tweets
 
-function render(){
+function render(tweets){
     
-    document.getElementById('feed').innerHTML = getFeedHtml()
+    document.getElementById('feed').innerHTML = getFeedHtml(tweets)
 
 }
-render()
+render(tweetsFromStorage)
