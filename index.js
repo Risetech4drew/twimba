@@ -202,7 +202,7 @@ function getFeedHtml(tweets){
             <div class="hidden" id="replies-${tweet.uuid}">
                 ${repliesHtml}
                 <div class="tweet-reply">
-                    <textarea name="replyInput" id="reply-input-${tweet.uuid}" placeholder="Post your reply"></textarea>
+                    <textarea name="replyInput" id="reply-input-${tweet.uuid}" placeholder = "Post your reply"></textarea>
                     <button data-reply-btn="${tweet.uuid}">reply</button>
                 </div>
             </div>
